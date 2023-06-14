@@ -15,3 +15,8 @@ Welcome! The **`crfm-helm`** Python package contains code used in the **Holistic
 <!--intro-end-->
 
 To get started, refer to [the documentation on Read the Docs](https://crfm-helm.readthedocs.io/) for how to install and run the package.
+
+# 安装
+
+- 从 dockerhub 上下载 docker
+- 使用 git 拉取项目到本地
