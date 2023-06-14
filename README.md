@@ -29,3 +29,10 @@ pip install -r requirements.txt
 ./pre-commit.sh
 ```
 
+# Tips
+
+## 添加评测数据集
+- 在 src/helm/benchmark/scenarios 文件夹下面创建对应的文件和scenario名称
+- 在 src/helm/benchmark/scenarios/\_\_init\_\_.py 当中加入对应的路径
+- 在 src/helm/benchmark/run_specs.py 当中加入对应的 run_spec_function
+
