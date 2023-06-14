@@ -18,5 +18,14 @@ To get started, refer to [the documentation on Read the Docs](https://crfm-helm.
 
 # 安装
 
-- 从 dockerhub 上下载 docker
-- 使用 git 拉取项目到本地
+- 从 dockerhub 上下载 docker: nvidia/cuda:11.3.1-cudnn8-devel-ubuntu20.04\
+- 在命令行执行下面的程序
+```
+conda create -n crfm-helm python=3.8 pip
+conda activate crfm-helm
+git clone git@github.com:LibertFan/helm.git
+cd helm
+pip install -r requirements.txt
+./pre-commit.sh
+```
+
