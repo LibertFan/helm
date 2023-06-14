@@ -2217,6 +2217,51 @@ def get_anthropic_hh_rlhf_spec(subset: str) -> RunSpec:
     )
 
 
+@run_spec_function("gaokao")
+def get_gaokao_spec(subject: str, category: str, method: str = ADAPT_MULTIPLE_CHOICE_JOINT) -> RunSpec:
+    scenario_spec = ScenarioSpec(
+        class_name="helm.benchmark.scenarios.gaokao_scenario.GaoKaoScenario",
+        args={"subject": subject, "category": category}
+    )
+
+    adapter_spec = get_multiple_choice_adapter_spec(
+        method=method,
+        max_train_instances=0,
+        instructions=f"The following are multiple choice questions (with answers) about {subject.replace('_', ' ')}.",
+        input_noun="Question",
+        output_noun="Answer",
+    )
+
+    return RunSpec(
+        name=f"gaokao:subject={subject},category={category},method={method}",
+        scenario_spec=scenario_spec,
+        adapter_spec=adapter_spec,
+        metric_specs=get_exact_match_metric_specs(),
+        groups=["gaokao"],
+    )
+
+# @run_spec_function("mmlu")
+# def get_mmlu_spec(subject: str, method: str = ADAPT_MULTIPLE_CHOICE_JOINT) -> RunSpec:
+#     scenario_spec = ScenarioSpec(
+#         class_name="helm.benchmark.scenarios.mmlu_scenario.MMLUScenario", args={"subject": subject}
+#     )
+
+#     adapter_spec = get_multiple_choice_adapter_spec(
+#         method=method,
+#         instructions=f"The following are multiple choice questions (with answers) about {subject.replace('_', ' ')}.",
+#         input_noun="Question",
+#         output_noun="Answer",
+#     )
+
+#     return RunSpec(
+#         name=f"mmlu:subject={subject},method={method}",
+#         scenario_spec=scenario_spec,
+#         adapter_spec=adapter_spec,
+#         metric_specs=get_exact_match_metric_specs(),
+#         groups=["mmlu"],
+#     )
+
+
 ############################################################
 
 

@@ -192,17 +192,14 @@ class InContextLearningAdapter(Adapter, ABC):
         """
         # Instruction text
         instructions_block: str = self.adapter_spec.instructions
-
         # Text for in-context training instances
         train_instance_blocks: List[str] = [
             self.construct_example_prompt(inst, include_output=True, reference_index=None) for inst in train_instances
         ]
-
         # Example text
         eval_instance_block: str = self.construct_example_prompt(
             eval_instance, include_output=include_output, reference_index=reference_index
         )
-
         # Prompt
         prompt = Prompt(
             global_prefix=self.adapter_spec.global_prefix,
@@ -260,6 +257,7 @@ class InContextLearningAdapter(Adapter, ABC):
         # we remove train instances one by one until it fits within the context window or
         # until we run out of train instances to remove.
         orig_train_instances_count: int = prompt.num_train_instances
+        
         while prompt.num_train_instances > 0:
             if self.window_service.fits_within_context_window(
                 text=prompt.text,
@@ -278,7 +276,6 @@ class InContextLearningAdapter(Adapter, ABC):
             prompt = replace(
                 prompt, train_instance_blocks=prompt.train_instance_blocks[: len(prompt.train_instance_blocks) - 1]
             )
-
         # If removing the in-context example is still not enough, we simply truncate the prompt.
         # Following the default truncation strategy used by HuggingFace, we truncate the text from the right.
         text = prompt.text

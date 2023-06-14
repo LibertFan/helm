@@ -22,7 +22,11 @@ class LocalWindowService(WindowService):
         # If a value for `max_length` is not specified, then set it to the `max_request_length`of the `WindowService`.
         if max_length is None:
             max_length = self.max_request_length
-
+        if max_length > 10e10 and truncation:
+            max_length = min(max_length, 8192)
+        
+        # truncation = False
+        print("-"*20, self.tokenizer_name, truncation, max_length)
         response: TokenizationRequestResult = self.service.tokenize(
             TokenizationRequest(
                 text, tokenizer=self.tokenizer_name, encode=True, truncation=truncation, max_length=max_length
@@ -90,6 +94,8 @@ class LocalWindowService(WindowService):
         # for non-English, non-Chinese text (e.g., Russian from multi_eurlex. See more
         # in https://github.com/stanford-crfm/helm/issues/1448).
         # Truncate by removing character by character until the prompt fits within the context window.
+        
         while not self.fits_within_context_window(result, expected_completion_token_length):
             result = result[:-1]
+            print("truncate_from_right: {}".format(result))
         return result

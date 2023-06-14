@@ -1,0 +1,1 @@
+from helm.benchmark.scenarios.gaokao_scenario import GaoKaoScenario
