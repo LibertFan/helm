@@ -26,7 +26,6 @@ class LocalWindowService(WindowService):
             max_length = min(max_length, 8192)
         
         # truncation = False
-        print("-"*20, self.tokenizer_name, truncation, max_length)
         response: TokenizationRequestResult = self.service.tokenize(
             TokenizationRequest(
                 text, tokenizer=self.tokenizer_name, encode=True, truncation=truncation, max_length=max_length
@@ -97,5 +96,5 @@ class LocalWindowService(WindowService):
         
         while not self.fits_within_context_window(result, expected_completion_token_length):
             result = result[:-1]
-            print("truncate_from_right: {}".format(result))
+            # print("truncate_from_right: {}".format(result))
         return result

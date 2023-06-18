@@ -46,7 +46,6 @@ class MultipleChoiceJointAdapter(InContextLearningAdapter):
         return prefix.replace("A", chr(ord("A") + i))
 
     def generate_requests(self, eval_instance: Instance) -> List[RequestState]:
-        print("-"*20, "generate_requrest")
         prompt = self.construct_prompt(self.train_instances, eval_instance, include_output=False, reference_index=None)
         output_mapping: Dict[str, str] = dict(
             (self.get_reference_prefix("A", reference_index), reference.output.text)

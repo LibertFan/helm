@@ -30,9 +30,22 @@ class HuggingFaceServer:
         if model_config.revision:
             model_kwargs["revision"] = model_config.revision
         with htrack_block(f"Loading Hugging Face model for config {model_config}"):
+            # model_kwargs["load_in_8bit"] = True
+            # model_kwargs["device_map"] = 'auto'
+            # model_kwargs["load_in_8bit"] = True
             self.model = AutoModelForCausalLM.from_pretrained(
                 model_config.model_id, trust_remote_code=True, **model_kwargs
             ).to(self.device)
+            # try:
+            #     self.model = AutoModelForCausalLM.from_pretrained(
+            #         model_config.model_id, trust_remote_code=True, **model_kwargs
+            #     ).to(self.device)
+            # except:# RuntimeError:
+            #     model_kwargs["load_in_8bit"] = True
+            #     model_kwargs["device_map"] = 'auto'
+            #     self.model = AutoModelForCausalLM.from_pretrained(
+            #         model_config.model_id, trust_remote_code=True, **model_kwargs
+            #     ).to(self.device)
         with htrack_block(f"Loading Hugging Face tokenizer model for config {model_config}"):
             self.tokenizer = AutoTokenizer.from_pretrained(model_config.model_id, **model_kwargs)
 
