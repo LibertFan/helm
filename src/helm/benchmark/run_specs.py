@@ -1120,6 +1120,8 @@ def get_lsat_qa_spec(task: str, method: str = ADAPT_MULTIPLE_CHOICE_JOINT) -> Ru
         instructions="The following are multiple choice questions (with answers).",
         input_noun="Passage",
         output_noun="Answer",
+        # max_train_instances=4,
+        # num_outputs=3,
     )
     metric_specs = get_exact_match_metric_specs()
 

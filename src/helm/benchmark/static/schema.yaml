@@ -1566,6 +1566,7 @@ run_groups:
       - hellaswag
       - openbookqa
       - truthful_qa
+      - gaokao
 
   - name: information_retrieval
     display_name: Information retrieval
@@ -1646,6 +1647,7 @@ run_groups:
       - truthful_qa
       - mmlu
       - wikifact
+      - gaokao
 
   - name: reasoning
     display_name: Reasoning
@@ -1969,6 +1971,27 @@ run_groups:
       who: "?"
       when: "?"
       language: English
+
+  - name: gaokao
+    display_name: GaoKao
+    short_display_name: gaokao
+    description: GAOKAO-bench [Paper](https://arxiv.org/pdf/2305.12474.pdf)
+    metric_groups:
+      - accuracy
+      - calibration
+      - robustness
+      - fairness
+      - efficiency
+      - general_information
+    environment:
+      main_name: exact_match
+      main_split: test
+    taxonomy:
+      task: question answering
+      what: "?"
+      who: "?"
+      when: "?"
+      language: Chinese
 
 # Information retrieval scenarios
   - name: msmarco_regular

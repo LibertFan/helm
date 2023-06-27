@@ -1,7 +1,7 @@
 from copy import deepcopy
 import torch
 from dataclasses import asdict
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, AutoModel
 from typing import Any, Dict, List
 
 from helm.common.cache import Cache, CacheConfig
@@ -33,9 +33,16 @@ class HuggingFaceServer:
             # model_kwargs["load_in_8bit"] = True
             # model_kwargs["device_map"] = 'auto'
             # model_kwargs["load_in_8bit"] = True
+            # if model_config.model_id == "chatglm/chatglm-6b":
+            #     self.model = AutoModel.from_pretrained(
+            #         model_config.model_id, trust_remote_code=True, **model_kwargs
+            #     ).half().cuda().to(self.device)
+            # else:
             self.model = AutoModelForCausalLM.from_pretrained(
-                model_config.model_id, trust_remote_code=True, **model_kwargs
+                model_config.model_id, trust_remote_code=True, # torch_dtype=torch.float16,
+                **model_kwargs # load_in_8bit=True, device_map='auto', 
             ).to(self.device)
+
             # try:
             #     self.model = AutoModelForCausalLM.from_pretrained(
             #         model_config.model_id, trust_remote_code=True, **model_kwargs
@@ -47,7 +54,9 @@ class HuggingFaceServer:
             #         model_config.model_id, trust_remote_code=True, **model_kwargs
             #     ).to(self.device)
         with htrack_block(f"Loading Hugging Face tokenizer model for config {model_config}"):
-            self.tokenizer = AutoTokenizer.from_pretrained(model_config.model_id, **model_kwargs)
+            # tokenizer = AutoTokenizer.from_pretrained("chatglm/chatglm-6b", trust_remote_code=True)
+            self.tokenizer = AutoTokenizer.from_pretrained(
+                model_config.model_id, trust_remote_code=True, **model_kwargs)
 
     def serve_request(self, raw_request: Dict[str, Any]):
         encoded_input = self.tokenizer(raw_request["prompt"], return_tensors="pt").to(self.device)

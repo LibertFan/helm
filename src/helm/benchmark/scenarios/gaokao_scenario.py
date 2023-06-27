@@ -187,26 +187,6 @@ class GaoKaoScenario(Scenario):
             assert subject in existing_subjects
             self.subjects = [subject]
 
-        #     # if text.startswith("{}.".format(char)) or text.startswith("{}、".format(char)):
-        #
-        # try:
-        #     for m, text in enumerate(question.split("\n")):
-        #         for n, char in enumerate(chars):
-        #             if text.startswith("{}.".format(char)) or text.startswith("{}、".format(char)):
-        #                 char_to_idx[chars[n]] = m
-        #     char_to_idx[chars[-1]] = m + 1
-        #
-        #     answers_dict = {}
-        #     answers = []
-        #     for n, char in enumerate(chars[:-1]):
-        #         start_idx = char_to_idx[chars[n]]
-        #         end_idx = char_to_idx[chars[n + 1]]
-        #         answer = " ".join(question.split("\n")[start_idx: end_idx])
-        #         answers_dict[chars[n]] = answer
-        #         answers.append(answer)
-        # except:
-        #     print(question)
-
     @staticmethod
     def process_question(question):
         chars = ["A", "B", "C", "D", "E"]
@@ -222,13 +202,14 @@ class GaoKaoScenario(Scenario):
         answers = []
         for n, char in enumerate(chars[:-1]):
             start_idx = char_to_idx[chars[n]]
-            end_idx = char_to_idx[chars[n + 1]]
+            end_idx = char_to_idx[chars[n+1]]
             answer = question[(start_idx+2): end_idx]
-            answers_dict[chars[n]] = answer.strip()
+            answer = answer.strip()
+            answers_dict[chars[n]] = answer
             answers.append(answer)
 
         question = question[:char_to_idx["A"]]
-
+        question = question.strip()
         return question, answers
 
     def get_instances(self) -> List[Instance]:
