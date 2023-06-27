@@ -37,3 +37,24 @@ pip install -r requirements.txt
 - 在 src/helm/benchmark/run_specs.py 当中加入对应的 run_spec_function
 - 在 src/helm/benchmark/static/schema.yaml 当中加入 dataset card
 
+## 评测模型
+### huggingface远程模型
+- 找到 huggingface model 的名字 zzz
+- 运行命令运行 
+```
+CUDA_VISIBLE_DEVICES=0 helm-run \
+    --conf-paths commands/run_xxx.conf \
+    --suite yyy --max-eval-instances 10000 \
+    --enable-huggingface-models zzz \
+    -n 1 
+```
+### 本地模型
+- 将模型 zzz 放在 examples/disc_llms 当中
+- 运行命令 
+```
+CUDA_VISIBLE_DEVICES=0 helm-run \
+    --conf-paths commands/run_xxx.conf \
+    --suite yyy --max-eval-instances 10000 \
+    --enable-huggingface-models disc_llms/zzz \
+    -n 1 
+```
